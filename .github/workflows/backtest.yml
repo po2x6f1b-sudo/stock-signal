@@ -1,0 +1,18 @@
+name: backtest
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: "直近何営業日で検証するか（例: 5=1週間、40=約2か月）"
+        default: "5"
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install yfinance pandas numpy requests
+      - run: python backtest.py --days ${{ inputs.days }}
